@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas width = "800" height="600"></canvas>
+	<script>
+		//38,画出平面直角坐标系，并在坐标系上画出一个圆，圆中分成5块，每块分别占比：2:1:3:1:3
+		var canvas = document.querySelector("canvas");
+		var ctx = canvas.getContext("2d");
+		/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~定义一些列变量~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+		var topyX = 50,topyY = 50;
+		var axisLength = 400;//横纵坐标的长度均为400
+		var arrowHeight = 20,arrowBottom = 10;
+		var Ox = 200,Oy = 300,r = 100;
+		var startRadian = -Math.PI/2;
+		;
+		(function(global){
+			function Exam(data){
+				this.data = data;
+				this.initialized();
+			};
+			Exam.prototype = {
+				constructor:Exam,
+				//初始化
+				initialized:function(){
+					this.drawAxis();
+					this.drawArrow();
+					this.drawCircle();
+				},
+				//绘制坐标轴
+				drawAxis:function(){
+					var originX = topyX;
+					var originY = topyY+axisLength;
+					this.topxX = originX+axisLength;
+					this.topxY = originY;
+					ctx.moveTo(topyX,topyY);
+					ctx.lineTo(originX,originY);
+					ctx.lineTo(this.topxX,this.topxY);
+					ctx.stroke();
+				},
+				//绘制箭头
+				drawArrow:function(){
+					//绘制y箭头
+					ctx.beginPath();
+					ctx.moveTo(topyX-arrowBottom/2,topyY+arrowHeight);
+					ctx.lineTo(topyX,topyY);
+					ctx.lineTo(topyX+arrowBottom/2,topyY+arrowHeight)
+					ctx.stroke();
+
+					//绘制x箭头
+					ctx.beginPath();
+					ctx.moveTo(this.topxX-arrowHeight,this.topxY-arrowBottom/2);
+					ctx.lineTo(this.topxX,this.topxY);
+					ctx.lineTo(this.topxX-arrowHeight,this.topxY+arrowBottom/2);
+					ctx.stroke();
+				},
+				//绘制圆,并且分成5块
+				drawCircle:function(){
+					var total = 0;
+					for(var i = 0;i < this.data.length;i++){
+						total+=this.data[i];
+					}
+
+					for(var i = 0;i < this.data.length;i++){
+						var space = 2*Math.PI*(this.data[i]/total);
+						ctx.beginPath();
+						ctx.moveTo(Ox,Oy);
+						ctx.arc(Ox,Oy,r,startRadian,startRadian+space);
+						ctx.stroke();
+						startRadian+=space;
+					}
+				}
+			};
+
+			function exam(data){
+				return new Exam(data);
+			};
+			global.exam38 = exam;
+		})(window);
+		//调用
+		var data = [2,1,3,1,3];
+		exam38(data);
+	</script>
+</body>
+</html>

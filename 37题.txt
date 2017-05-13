@@ -1,0 +1,15 @@
+ var  arr = [ { name: '张三1' },
+              { name: '张三2' },
+              { name: '张三3' },
+              { name: '张三4' } 
+	    ];
+    // 利用循环, 给他添加方法
+    for ( var i = 0; i < arr.length; i++) {
+        arr[ i ].sayHello = function () {
+            console.log(i+1);//修改处i-->i+1
+        };
+    }
+    //分别调用每一个对象中的sayHello方法
+    for(var i= 0;i<arr.length;i++){
+    	arr[i].sayHello();
+    }
